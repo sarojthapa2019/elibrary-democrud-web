@@ -4,6 +4,9 @@ import edu.mum.cs.cs425.demos.elibrarydemocrudweb.model.Book;
 import edu.mum.cs.cs425.demos.elibrarydemocrudweb.repository.BookRepository;
 import edu.mum.cs.cs425.demos.elibrarydemocrudweb.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +23,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Iterable<Book> getAllBooks() {
-        return repository.findAll();
+//        return ((List<Book>)repository.findAll())
+//                .stream()
+//                .sorted(Comparator.comparing(Book::getTitle))
+//                .collect(Collectors.toList());
+        return repository.findAll(Sort.by("title"));
+    }
+
+    @Override
+    public Page<Book> getAllBooksPaged(int pageNo) {
+        return repository.findAll(PageRequest.of(pageNo, 3, Sort.by("title")));
     }
 
     @Override
