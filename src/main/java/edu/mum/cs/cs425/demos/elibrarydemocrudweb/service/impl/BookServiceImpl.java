@@ -4,9 +4,7 @@ import edu.mum.cs.cs425.demos.elibrarydemocrudweb.model.Book;
 import edu.mum.cs.cs425.demos.elibrarydemocrudweb.repository.BookRepository;
 import edu.mum.cs.cs425.demos.elibrarydemocrudweb.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +46,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(Integer bookId) {
         repository.deleteById(bookId);
+    }
+
+    @Override
+    public Page<Book> getSearchedBookspaged(String keyword, int pageNo) {
+        List<Book> bookList = repository.findByTitleContaining(keyword);
+        Page<Book> bookPage = new PageImpl<>(bookList);
+        return bookPage;
+
+
+
     }
 
 }

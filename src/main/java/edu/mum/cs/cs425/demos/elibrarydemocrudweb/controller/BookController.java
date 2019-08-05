@@ -30,6 +30,14 @@ public class BookController {
         modelAndView.setViewName("book/list");
         return modelAndView;
     }
+    //searching books
+    @PostMapping(value = {"/elibrary/book/search"})
+    public ModelAndView searchBook(@RequestParam("keyword") String keyword,@RequestParam(defaultValue = "0") int pageno){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("books",bookService.getSearchedBookspaged(keyword,pageno));
+        modelAndView.setViewName("book/list");
+        return modelAndView;
+    }
 
     @GetMapping(value = {"/elibrary/book/new"})
     public String displayNewBookForm(Model model) {
@@ -47,6 +55,8 @@ public class BookController {
         book = bookService.saveBook(book);
         return "redirect:/elibrary/book/list";
     }
+
+
 
     @GetMapping(value = {"/elibrary/book/edit/{bookId}"})
     public String editBook(@PathVariable Integer bookId, Model model) {
@@ -74,5 +84,7 @@ public class BookController {
         bookService.deleteBookById(bookId);
         return "redirect:/elibrary/book/list";
     }
+
+
 
 }
